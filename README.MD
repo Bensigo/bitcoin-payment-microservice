@@ -6,19 +6,19 @@ To install  the module  you need to have node install in your loacl machine  and
 
 ### Usage
 To use with the micro service you need to install some module first with.
-```
+``` shell
   npm install --save bitcoin-payment-mircoservice
  ```
  Or you use yarn to install the package 
- ``` 
+ ``` shell
   yarn add bitcoin-payment-mircoservice
   ``` 
 then in, your javascript file.
-```
+```javascript
   const bitcoinPayment = require('bitcoin-payment-mircoservice')
 ```
 To get the current bitcoin balance of an address
-```
+``` javascript
  const balance =  bitcoinPayment.getBalance(address) // return address balance
  console.log('bitcoin Balance', balance)
 ```
@@ -27,20 +27,20 @@ returns </br>
   bitcoin Balance 0.009797
  ```
 To Generate a bitcoin address 
-``` 
+``` javascript
   const address = bitcoinPayment.createAddress() // return a bitcoin address with   private key
   console.log(address)
  ```
 returns </br>
-```
+``` json
  {
    address: '1K3QovFjbXG9HMYSfTE8WMc7EHhhpJSGwT',
    privateKey: 'achgjxsdvhjahkjlxkdcbazagshkjlskncvgshjasluyihkjaknjxs'
  }
- ** NOTE: Please always secure your private key
+ // NOTE: Please always secure your private key
 ```
 To send Bitcoin to an address</br>
-```
+``` javascript
  sendBTC (paperWallet, toAddress, amount, txID)
  // paperWallet - Generated address with private key to validate the transaction
  // amount -  amount to be sent
