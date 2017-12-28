@@ -4,7 +4,7 @@ const axios = require('axios')
 
 const transaction =  new BLT({testnet: true})
 
-exports.BitcoinPaymentApi =  {
+module.exports  = {
   //Generate bitcoin address for the user to send money and also to listen for transaction
   createAddress () {
     const privateKey =  bitcoin.ECPair.makeRandom().toWIF()
@@ -75,5 +75,4 @@ Transaction is a made using the public and private key to send amount to master-
   
   
 } 
-
 

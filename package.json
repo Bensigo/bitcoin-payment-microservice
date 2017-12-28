@@ -1,22 +1,22 @@
 {
-  "name": "bitcoin-payment-mircoservice",
-  "version": "0.0.8",
+  "name": "bitcoin-payment-microservice",
+  "version": "0.0.9",
   "main": "index.js",
   "license": "MIT",
   "description": "A micro bitcoin payment package Beta Version",
   "author": {
-      "name": "Bensigo Egwey",
-      "email": "sigocode@gmail.com",
+    "name": "Bensigo Egwey",
+    "email": "sigocode@gmail.com",
+    "contributors": [
+      "Musa Farouk"
+    ]
   },
-  "contributors": [
-    "Musa Farouk"
-  ],
   "scripts": {
     "start": "node ./src/index.js"
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "bitcoin-transaction": "^1.1.0",
+    "bitcoin-live-transactions": "^0.0.13",
     "bitcoinjs-lib": "^3.3.2"
   }
 }
