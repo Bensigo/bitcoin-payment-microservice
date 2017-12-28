@@ -32,7 +32,7 @@ To Generate a bitcoin address
   console.log(address)
  ```
 returns </br>
-``` json
+```
  {
    address: '1K3QovFjbXG9HMYSfTE8WMc7EHhhpJSGwT',
    privateKey: 'achgjxsdvhjahkjlxkdcbazagshkjlskncvgshjasluyihkjaknjxs'
