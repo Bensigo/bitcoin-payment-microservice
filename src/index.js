@@ -1,8 +1,9 @@
 const bitcoin = require('bitcoinjs-lib')
 const BLT = require("bitcoin-live-transactions")
 const axios = require('axios')
+const transaction =  new BLT()
 
-const transaction =  new BLT({testnet: true})
+
 
 module.exports  = {
   //Generate bitcoin address for the user to send money and also to listen for transaction
@@ -27,10 +28,10 @@ module.exports  = {
     })
   },
   sendBTC (paperWallet, toAddress, amount, txID) {
-    const address = paperWallet.address
+    const address = bitcoin.ECPair.fromWIF(paperWallet.privateKey)
     const txb = new bitcoin.TransactionBuilder()
-      txb.addInput(txID , 0)
-      txb.addOutput(toAddress, amount)
+      txb.addInput(txID , 0) // previous transactionId from the address at index 0
+      txb.addOutput(toAddress, amount) 
       txb.sign(0, paperWallet.address)
       txb.build().toHex() 
       transaction.connect()

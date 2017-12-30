@@ -1,6 +1,6 @@
 {
   "name": "bitcoin-payment-microservice",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "./src/index.js",
   "license": "MIT",
   "description": "A micro bitcoin payment package Beta Version",
@@ -17,6 +17,7 @@
   "dependencies": {
     "axios": "^0.17.1",
     "bitcoin-live-transactions": "^0.0.13",
-    "bitcoinjs-lib": "^3.3.2"
+    "bitcoinjs-lib": "^3.3.2",
+    "cb-http-client": "^0.2.3"
   }
 }
