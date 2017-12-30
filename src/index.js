@@ -19,7 +19,6 @@ module.exports  = {
     axios.get(`https://api.blockcypher.com/v1/btc/main/addrs/${address}/balance`)
     .then(res => {
       const amount = res.data.balance/100000000
-      console.log(planAmount)
       return amount
   
     })

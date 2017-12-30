@@ -48,14 +48,12 @@ To send Bitcoin to an address</br>
  // txID - Transaction ID on the bitcoin ledger from the address on the paper wallet
 
 ``` 
-</br>
 To monitor a blockchain transaction on an address and transfer payment to a master address
 </Br>
-```
+```javascript
   finalizeTransaction (paperWallet, toMasterAddress, amount)
 ```
-</br>
-  ### Build With
+ ### Build With
   <ul>
     <li>Node Js - javascript runtime engine </li>
     </li>Bitcoin-live-transactions NPM package</li>
