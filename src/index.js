@@ -15,6 +15,16 @@ module.exports  = {
     console.log(paperWallet)
     return paperWallet
   },
+  createTestnetAddress () {
+    const testnet = bitcoin.networks.testnet
+    const keyPair =  bitcoin.ECPair.makeRandom({network: testnet})
+    const privateKey = keyPair.toWIF()
+    const address = keyPair.getAddress()
+    const paperWallet = {address, privateKey}
+    console.log(paperWallet)
+    return paperWallet
+
+  },
   // get the current bitcoin balance from address
   getBalance (address) {
     axios.get(`https://api.blockcypher.com/v1/btc/main/addrs/${address}/balance`)
@@ -34,17 +44,15 @@ module.exports  = {
       txb.addOutput(toAddress, amount) 
       txb.sign(0, paperWallet.address)
       txb.build().toHex() 
-      transaction.connect()
-      transaction.events.on(toAddress, tx => {
-        if (tx !== null) {
-          console.log('transfer successful')
-          return 'transfer successful'
-        } else {
-          console.log('transfer failed')
-          return 'transfer failed'
-        }
-      })
   },
+  sendTestnetBTC (paperWallet, toAddress, amount, txID) {
+    const address = bitcoin.ECPair.fromWIF(paperWallet.privateKey, bitcoin.networks.testnet)
+    const txb = new bitcoin.TransactionBuilder()
+      txb.addInput(txID , 0) // previous transactionId from the address at index 0
+      txb.addOutput(toAddress, amount) 
+      txb.sign(0, paperWallet.address)
+      txb.build().toHex() 
+  }
   /*
 Generated bitcoin address is fetched to be listened to for transaction
 If the transaction has been made with the designated amount
