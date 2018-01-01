@@ -25,9 +25,9 @@ module.exports  = {
     return paperWallet
 
   },
-  // get the current bitcoin balance from address
-  getBalance (address) {
-    axios.get(`https://api.blockcypher.com/v1/btc/main/addrs/${address}/balance`)
+  // get the current bitcoin balance from address network : main || test3
+  getBalance (address, network) {
+    axios.get(`https://api.blockcypher.com/v1/btc/${network}/addrs/${address}/balance`)
     .then(res => {
       const amount = res.data.balance/100000000
       return amount
