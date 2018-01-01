@@ -26,16 +26,17 @@ module.exports  = {
 
   },
   // get the current bitcoin balance from address network : main || test3
-  getBalance (address, network) {
-    axios.get(`https://api.blockcypher.com/v1/btc/${network}/addrs/${address}/balance`)
+  async getBalance (address, network) {
+   const result = await axios.get(`https://api.blockcypher.com/v1/btc/${network}/addrs/${address}/balance`)
     .then(res => {
-      const amount = res.data.balance/100000000
+      const amount = res.data.final_balance/100000000
       return amount
   
     })
     .catch(err => {
       console.log(err)
     })
+    return result
   },
   sendBTC (paperWallet, toAddress, amount, txID) {
     const address = bitcoin.ECPair.fromWIF(paperWallet.privateKey)
