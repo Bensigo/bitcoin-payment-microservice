@@ -1,6 +1,6 @@
 {
   "name": "bitcoin-payment-microservice",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "main": "./src/index.js",
   "license": "MIT",
   "description": "A micro bitcoin payment package Beta Version",

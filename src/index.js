@@ -42,17 +42,17 @@ module.exports  = {
     const txb = new bitcoin.TransactionBuilder()
       txb.addInput(txID , 0) // previous transactionId from the address at index 0
       txb.addOutput(toAddress, amount) 
-      txb.sign(0, paperWallet.address)
+      txb.sign(0, address)
       txb.build().toHex() 
   },
   sendTestnetBTC (paperWallet, toAddress, amount, txID) {
     const address = bitcoin.ECPair.fromWIF(paperWallet.privateKey, bitcoin.networks.testnet)
-    const txb = new bitcoin.TransactionBuilder()
+    const txb = new bitcoin.TransactionBuilder(bitcoin.networks.testnet)
       txb.addInput(txID , 0) // previous transactionId from the address at index 0
       txb.addOutput(toAddress, amount) 
-      txb.sign(0, paperWallet.address)
+      txb.sign(0, address)
       txb.build().toHex() 
-  }
+  },
   /*
 Generated bitcoin address is fetched to be listened to for transaction
 If the transaction has been made with the designated amount
