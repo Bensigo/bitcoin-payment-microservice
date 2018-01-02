@@ -29,8 +29,8 @@ module.exports  = {
   async getBalance (address, network) {
    const result = await axios.get(`https://api.blockcypher.com/v1/btc/${network}/addrs/${address}/balance`)
     .then(res => {
-      const amount = res.data.final_balance/100000000
-      return amount
+      const data = res.data
+      return data
   
     })
     .catch(err => {
