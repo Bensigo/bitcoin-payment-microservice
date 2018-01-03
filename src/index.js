@@ -1,7 +1,7 @@
 const bitcoin = require('bitcoinjs-lib')
-const BLT = require("bitcoin-live-transactions")
 const axios = require('axios')
-const transaction =  new BLT()
+const bitcore = require('../node_modules/bitcore-explorers/node_modules/bitcore-lib/index.js')
+const explorer = require('bitcore-explorers')
 
 
 
@@ -38,50 +38,36 @@ module.exports  = {
     })
     return result
   },
-  sendBTC (paperWallet, toAddress, amount, txID) {
-    const address = bitcoin.ECPair.fromWIF(paperWallet.privateKey)
-    const txb = new bitcoin.TransactionBuilder()
-      txb.addInput(txID , 0) // previous transactionId from the address at index 0
-      txb.addOutput(toAddress, amount) 
-      txb.sign(0, address)
-      txb.build().toHex() 
-  },
-  sendTestnetBTC (paperWallet, toAddress, amount, txID) {
-    const address = bitcoin.ECPair.fromWIF(paperWallet.privateKey, bitcoin.networks.testnet)
-    const txb = new bitcoin.TransactionBuilder(bitcoin.networks.testnet)
-      txb.addInput(txID , 0) // previous transactionId from the address at index 0
-      txb.addOutput(toAddress, amount) 
-      txb.sign(0, address)
-      txb.build().toHex() 
-  },
-  /*
-Generated bitcoin address is fetched to be listened to for transaction
-If the transaction has been made with the designated amount
-Transaction is a made using the public and private key to send amount to master-address
-*/
-  finalizeTransaction (paperWallet, toMasterAddress, planAmount) {
-    console.log('about to start  listening')
-    transaction.events.on(paperWallet.address, tx => {
-      console.log('start listening to transaction on :', paperWallet.address)
-      if (tx) {
-        console.log('transaction detected', tx)
-        const balance =  getBalance(paperWallet.address)
-        if (tx.amount === planAmount) {
-          // send a transaction
-          sendTransaction(paperWallet, toMasterAddress, balance, tx.txid)
-          console.log('plan have been successfully purchased')
-        } else {
-          // NOTE:  make a refund if asked for fund
-          sendTransaction(paperWallet, toMasterAddress, balance, tx.txid) 
-        }
-      } else {
-        console.log('Transaction not found ')
-        return 'Transaction not found '
-  
-      }
-    })
-  }
-  
-  
-} 
+  sendBTC (paperWallet, toAddress, amount, network) {
+    const insight = new explorer.Insight(network)
+    var transactionId;
+    const fee = amount * 0.1
+    //get unsent tx from address 
+    insight.getUnspentUtxos(paperWallet.address, (err, utxo) => {
+      // create a transaction
+      if (err) {
+        console.log(err)
+      }else {
+        const tx = bitcore.Transaction()
+        .from(utxo)
+        .to(toAddress, amount) // in satoshi
+        .fee(amount)
+        .sign(paperWallet.privateKey)
+        .serialize()
+        // push transaction to the blockchain network 
+        insight.broadcast(tx, (err, txid) => {
+          if (err) {
+            console.log(err)
+          }
+          console.log('transaction sent(id): ' + txid)
+          transactionId = txid
+          
 
+        })
+
+      }
+
+    })
+    return transactionId
+  }
+}

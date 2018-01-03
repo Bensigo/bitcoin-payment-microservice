@@ -41,23 +41,21 @@ returns </br>
 ```
 To send Bitcoin to an address</br>
 ```
- sendBTC (paperWallet, toAddress, amount, txID)
+ sendBTC (paperWallet, toAddress, amount, network) =>  transactionID
  // paperWallet - Generated address with private key to validate the transaction
- // amount -  amount to be sent
+ // amount -  amount to be sent in satoshi
  // toAddress - Bitcoin address to receive the amount
- // txID - Transaction ID on the bitcoin ledger from the address on the paper wallet
+ // network - which could either 'testnet' or 'livenet/mainnet'
 
 ``` 
-To monitor a blockchain transaction on an address and transfer payment to a master address
 </Br>
-```javascript
-  finalizeTransaction (paperWallet, toMasterAddress, amount)
-```
  ### Build With
   <ul>
     <li>Node Js - javascript runtime engine </li>
     </li>Bitcoin-live-transactions NPM package</li>
     <li>Bitcoinjs-lib from bitcoinjs</li>
+    <li>Bitcore-lib from bitcore-lib</li>
+    <li>Bitcore-explorers from Bitcore-explorers</li>
     <li>Axios</li>
 </ul>
 
