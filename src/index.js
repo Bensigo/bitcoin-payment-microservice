@@ -2,6 +2,7 @@ const bitcoin = require('bitcoinjs-lib')
 const axios = require('axios')
 const bitcore = require('bitcore-lib')
 const explorer = require('bitcore-explorers')
+const BLT = require('bitcoin-live-transactions')
 
 
 
@@ -12,7 +13,7 @@ module.exports  = {
     const keyPair = bitcoin.ECPair.fromWIF(privateKey)
     const address = keyPair.getAddress()
     const paperWallet = {address, privateKey}
-    console.log(paperWallet)
+    
     return paperWallet
   },
   createTestnetAddress () {
@@ -21,7 +22,7 @@ module.exports  = {
     const privateKey = keyPair.toWIF()
     const address = keyPair.getAddress()
     const paperWallet = {address, privateKey}
-    console.log(paperWallet)
+    
     return paperWallet
 
   },
@@ -30,6 +31,7 @@ module.exports  = {
    const result = await axios.get(`https://api.blockcypher.com/v1/btc/${network}/addrs/${address}/balance`)
     .then(res => {
       const data = res.data
+      console.log(JSON.stringify(data))
       return data
   
     })
@@ -69,5 +71,23 @@ module.exports  = {
 
     })
     return transactionId
+  },
+  litenToLiveTransaction(address) {
+    const BTC = new BLT() 
+    // connect to netwotk 
+    BTC.connect()
+    console.log('connected to the btc p2p network')
+    return BTC.events.on(address, (tx) => {
+      console.log('transaction decected:', tx)
+      return tx
+    })
+
   }
 }
+
+const blockchain = require('./index')
+
+const listen = blockchain.litenToLiveTransaction(
+  "1PYBNfrdQW4cbiRpmHRY3X8MypuYznfdr8"
+);
+console.log(listen)

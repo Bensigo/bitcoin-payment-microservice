@@ -48,6 +48,17 @@ To send Bitcoin to an address</br>
  // network - which could either 'testnet' or 'livenet/mainnet'
 
 ``` 
+## To listen to an address on a network for transaction
+```
+  bitcoinPayment.litenToLiveTransaction(address) => tx
+```
+ Will trigger the event in real time if a payment is done to that address:
+ ```
+  Transaction detected! { address: '138WJKb1mXbkRGNpyMVEZ9EsoXjMEvJfT4',
+  amount: 381000 }
+```
+
+
 </Br>
  ### Build With
   <ul>
