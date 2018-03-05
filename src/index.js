@@ -1,6 +1,6 @@
 const bitcoin = require('bitcoinjs-lib')
 const axios = require('axios')
-const bitcore = require('bitcore-lib')
+const bitcore = require("../node_modules/bitcore-explorers/node_modules/bitcore-lib/index.js");
 const explorer = require('bitcore-explorers')
 const BLT = require('bitcoin-live-transactions')
 
