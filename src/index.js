@@ -27,8 +27,8 @@ module.exports  = {
 
   },
   // get the current bitcoin balance from address network : main || test3
-  async getBalance (address, network) {
-   const result = await axios.get(`https://api.blockcypher.com/v1/btc/${network}/addrs/${address}/balance`)
+   getBalance (address, network) {
+   const result =  axios.get(`https://api.blockcypher.com/v1/btc/${network}/addrs/${address}/balance`)
     .then(res => {
       const data = res.data
       console.log(JSON.stringify(data))
