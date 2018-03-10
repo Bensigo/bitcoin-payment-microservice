@@ -18,7 +18,7 @@ then in, your javascript file.
   const bitcoinPayment = require('bitcoin-payment-mircoservice')
 ```
 To get the current bitcoin balance of an address
-``` javascript
+```javascript
  const balance =  bitcoinPayment.getBalance(address) // return address balance
  console.log('bitcoin Balance', balance)
 ```
@@ -27,7 +27,7 @@ returns </br>
   bitcoin Balance 0.009797
  ```
 To Generate a bitcoin address 
-``` javascript
+```javascript
   const address = bitcoinPayment.createAddress() // return a bitcoin address with   private key
   console.log(address)
  ```
@@ -40,7 +40,7 @@ returns </br>
  // NOTE: Please always secure your private key
 ```
 To send Bitcoin to an address</br>
-``` javascript
+```javascript
  sendBTC (paperWallet, toAddress, amount, txID)
  // paperWallet - Generated address with private key to validate the transaction
  // amount -  amount to be sent
@@ -51,17 +51,18 @@ To send Bitcoin to an address</br>
 </br>
 To monitor a blockchain transaction on an address and transfer payment to a master address
 </Br>
-```
+```javascript
   finalizeTransaction (paperWallet, toMasterAddress, amount)
 ```
 </br>
   ### Build With
+```html  
   <ul>
     <li>Node Js - javascript runtime engine </li>
     </li>Bitcoin-live-transactions NPM package</li>
     <li>Bitcoinjs-lib from bitcoinjs</li>
     <li>Axios</li>
 </ul>
-
+```
 
  
