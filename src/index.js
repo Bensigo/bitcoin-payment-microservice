@@ -102,7 +102,7 @@ module.exports  = {
 
     })
   },
-  litenToLiveTransaction(address) {
+  listenToLiveTransaction(address) {
     const BTC = new BLT() 
     // connect to netwotk 
     BTC.connect()
