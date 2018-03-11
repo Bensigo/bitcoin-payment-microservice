@@ -1,8 +1,14 @@
 # Micro Bitcoin Payment Service
-  A micro service for adding bitcoin payment to your node application</br>
+  A micro service for adding bitcoin payment to your node application. using node 8.0</br>
 
 #### Prerequisites
 To install  the module  you need to have node install in your loacl machine  and also npm / yarn.</br>
+
+### Testing
+To run a unit test run the following command
+```
+  npm run test
+```
 
 ### Usage
 To use with the micro service you need to install some module first with.
