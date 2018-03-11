@@ -1,6 +1,5 @@
 const bitcoin = require('bitcoinjs-lib')
 const axios = require('axios')
-const bitcore = require("../node_modules/bitcore-explorers/node_modules/bitcore-lib/index.js");
 const explorer = require('bitcore-explorers')
 const BLT = require('bitcoin-live-transactions')
 
@@ -26,13 +25,21 @@ module.exports  = {
     return paperWallet
 
   },
+  toSatoshis(amount){
+    return amount * 100000000
+  },
+  toBTC(amount){
+    return amount / 100000000;
+  },
   // get the current bitcoin balance from address network : main || test3
    getBalance (address, network) {
    const result =  axios.get(`https://api.blockcypher.com/v1/btc/${network}/addrs/${address}/balance`)
     .then(res => {
       const data = res.data
-      console.log(JSON.stringify(data))
-      return data
+       const response= JSON.stringify(data)
+       const obj = JSON.parse(response)
+       console.log(obj)
+       return obj
   
     })
     .catch(err => {
@@ -40,37 +47,60 @@ module.exports  = {
     })
     return result
   },
-  sendBTC (paperWallet, toAddress, amount, network) {
+  async getTransactionFee (){
+    console.log('getting transacction fee ..................')
+    const feePerHour = await axios.get("https://bitcoinfees.earn.com/api/v1/fees/recommended")
+      .then(res => {
+          const feePerSatoshis = res.data.hourFee;
+          return feePerSatoshis 
+      })
+      .catch(err => {
+        console.log(err)
+        return
+      })
+      const txfee = feePerHour * 225 // fees in satoshis
+      return JSON.stringify(txfee);
+
+  },
+  async sendBTC (paperWallet, toAddress, amount, network) {
     const insight = new explorer.Insight(network)
-    var transactionId;
-    const fee = amount * 0.1
+    const fee = await this.getTransactionFee()
+    console.log(fee)
+    const amt = (this.toSatoshis(amount) - fee)
+    let transactionId;
+    console.log(amt)       
     //get unsent tx from address 
     insight.getUnspentUtxos(paperWallet.address, (err, utxo) => {
       // create a transaction
       if (err) {
         console.log(err)
       }else {
-        const tx = bitcore.Transaction()
-        .from(utxo)
-        .to(toAddress, amount) // in satoshi
-        .fee(amount)
-        .sign(paperWallet.privateKey)
-        .serialize()
-        // push transaction to the blockchain network 
-        insight.broadcast(tx, (err, txid) => {
+        const obj = JSON.stringify(utxo[0])
+        const txid = JSON.parse(obj).txid
+        console.log(txid);
+        const netwk = network === 'testnet' ? bitcoin.networks.testnet : bitcoin.networks.bitcoin
+        const pubKey = bitcoin.ECPair.fromWIF(paperWallet.privateKey, netwk)
+        const txb = new bitcoin.TransactionBuilder(netwk)
+        txb.addInput(txid, 0)
+        txb.addOutput(toAddress, amt)
+        txb.sign(0, pubKey)
+        const  txHex =txb.build().toHex();
+         // push transaction to the blockchain network 
+        return insight.broadcast(txHex, (err, txid) => {
           if (err) {
-            console.log(err)
+             console.log(err)
+             const error = new Error("error why handling transaction");
+             return JSON.stringify(error)
+          }else {
+            console.log('transaction sent(id): ' + txid)
+            transactionId = txid
+            return transactionId
           }
-          console.log('transaction sent(id): ' + txid)
-          transactionId = txid
-          
-
         })
 
       }
 
     })
-    return transactionId
   },
   litenToLiveTransaction(address) {
     const BTC = new BLT() 
@@ -87,7 +117,11 @@ module.exports  = {
 
 const blockchain = require('./index')
 
-const listen = blockchain.litenToLiveTransaction(
-  "1PYBNfrdQW4cbiRpmHRY3X8MypuYznfdr8"
-);
-console.log(listen)
+// console.log(blockchain.litenToLiveTransaction("mi3StR8GVGzL7SH5QQutArRN7LY8XQX9Ud"));
+// console.log(blockchain.createTestnetAddress())
+// console.log(blockchain.getTransactionFee())
+// const paperW = {
+//   address: "mvXiMNTyrX8ukq7pJp4HygMcCKwPubtmoy",
+//   privateKey: "cUu337rR9kcRWkgFQtCNfkvHToM5qGfiJ4XLj1tZ522x2bHuZoAk"
+// };
+// blockchain.sendBTC(paperW, 'mtUcYf3dFdUXH4MeXhpXdkU3gp6dBirzhA', 0.4, 'testnet')
